@@ -1,4 +1,4 @@
-image: heroku:18-build
+image: ruby:2.6.3-alpine
 
 pipelines:
   default:
@@ -8,6 +8,8 @@ pipelines:
         services:
           - postgres
         script: # Modify the commands below to build your repository.
+          - apk update
+          - apk add --no-cache build-base libxml2-dev libxslt-dev wget openjdk8 bash git tzdata postgresql-dev libpq nodejs npm openssh
           - bundle install
           - bundle exec rails db:drop db:create db:migrate
           - rspec
