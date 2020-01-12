@@ -1,0 +1,25 @@
+image: ruby:2.6.3-alpine
+
+pipelines:
+  default:
+    - step:
+        caches:
+          - bundler
+        services:
+          - postgres
+        script: # Modify the commands below to build your repository.
+          - apk update
+          - apk add --no-cache build-base libxml2-dev libxslt-dev wget openjdk8 bash git tzdata postgresql-dev libpq nodejs npm openssh
+          - bundle install
+          - bundle exec rails db:drop db:create db:migrate
+          - bundle exec rspec
+
+definitions:
+  caches:
+    bundler: /usr/local/bundle
+  services:
+    postgres:
+      image: postgres:11.2
+      environment:
+        POSTGRES_DB: "chiquito_test"
+        POSTGRES_USER: "chiquito"
