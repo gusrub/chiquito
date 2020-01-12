@@ -1,0 +1,23 @@
+image: heroku:18-build
+
+pipelines:
+  default:
+    - step:
+        caches:
+          - bundler
+        services:
+          - postgres
+        script: # Modify the commands below to build your repository.
+          - bundle install
+          - bundle exec rails db:drop db:create db:migrate
+          - rspec
+
+definitions:
+  caches:
+    bundler: /usr/local/bundle
+  services:
+    postgres:
+      image: postgres:11.2
+      environment:
+        POSTGRES_DB: "chiquito_test"
+        POSTGRES_USER: "chiquito"
