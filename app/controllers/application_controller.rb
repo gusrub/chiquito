@@ -1,5 +1,7 @@
 class ApplicationController < ActionController::Base
-  def version
-    render json: { ping: 'pong' }
+
+  def index
+    render 'short_urls/index'
   end
+
 end
