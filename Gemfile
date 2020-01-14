@@ -6,9 +6,16 @@ ruby '2.6.3'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.2.3'
 
+# Queues
+gem 'sidekiq'
+
 # Allows us to use per-environment configurations and have it ready as soon as
 # the app is loaded (e.g. before we initialize database etc.)
 gem 'dotenv-rails', groups: [:development, :test], require: 'dotenv/rails-now'
+
+# This is a temporary hack to be able to run the sidekiq web interface locally
+# see https://github.com/rack/rack/pull/1428
+gem 'rack', git: 'https://github.com/rack/rack', branch: 'master'
 
 # Use postgresql as the database for Active Record
 gem 'pg', '>= 0.18', '< 2.0'
