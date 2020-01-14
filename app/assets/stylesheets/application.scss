@@ -13,3 +13,41 @@
  *= require_tree .
  *= require_self
  */
+
+@import "bootstrap";
+@import url('https://fonts.googleapis.com/css?family=Indie+Flower|Roboto&display=swap');
+
+@font-face {
+  font-family: patrol;
+  src: url(dk_display_patrol.otf);
+}
+
+html, body {
+  background-color: #fcede8;
+  font-family: "Indie Flower";
+}
+
+h1 {
+  text-align: center;
+  font-family: patrol;
+  color: #75507b;
+}
+h3 {
+  font-family: Roboto;
+}
+h4 {
+  text-align: center;
+}
+
+.alert {
+  display: none;
+}
+
+#short-url {
+  text-align: center;
+}
+
+.top100 {
+  font-size: 120%;
+  text-align: center;
+}

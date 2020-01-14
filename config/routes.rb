@@ -3,7 +3,7 @@ require 'sidekiq/web'
 Rails.application.routes.draw do
   root to: 'application#index'
 
-  resources :short_urls, only: [:create, :show], constraints: { format: 'json' } do
+  resources :short_urls, only: [:create, :show], constraints: { format: 'json' }, defaults: { format: 'json' } do
     collection do
       get :top
     end
