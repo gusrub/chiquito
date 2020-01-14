@@ -8,6 +8,7 @@ pipelines:
           - bundler
         services:
           - postgres
+          - redis
         script: # Modify the commands below to build your repository.
           - apk update
           - apk add --no-cache build-base libxml2-dev libxslt-dev wget openjdk8 bash tzdata postgresql-dev libpq nodejs npm openssh git tar file
@@ -48,3 +49,5 @@ definitions:
       environment:
         POSTGRES_DB: "chiquito_test"
         POSTGRES_USER: "chiquito"
+    redis:
+      image: redis:5.0-alpine
