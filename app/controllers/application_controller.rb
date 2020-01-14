@@ -9,6 +9,7 @@ class ApplicationController < ActionController::Base
     url = ShortUrl.find_by(short: path)
 
     if url.present?
+      url.visited!
       redirect_to url.original, status: 303
     else
       redirect_to :index

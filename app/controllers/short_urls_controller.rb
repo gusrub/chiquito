@@ -4,7 +4,15 @@ class ShortUrlsController < ApplicationController
   before_action :set_short_url, only: [:show]
 
   def top
-    @short_urls = ShortUrl.all
+    # let the user request certain amount but not above our system-wide max
+    max = params[:max].try(:to_i) || ENV['MAX_TOP_RECORDS'].to_i
+    max = if max > ENV['MAX_TOP_RECORDS'].to_i
+            ENV['MAX_TOP_RECORDS'].to_i
+          else
+            max
+          end
+
+    @short_urls = ShortUrl.top_visited(max: max)
   end
 
   def show

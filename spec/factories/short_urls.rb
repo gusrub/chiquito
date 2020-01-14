@@ -4,5 +4,6 @@ FactoryBot.define do
     ip_address { Faker::Internet.public_ip_v4_address }
     expiration { ShortUrl.expirations.keys.sample }
     title { Faker::Lorem.sentence(word_count: 4) }
+    visit_count { 0 }
   end
 end
