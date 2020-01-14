@@ -24,9 +24,17 @@ class ShortUrl < ApplicationRecord
   validates :short, custom_url: true
   validates :ip_address,  presence: true
   validates :expiration,  inclusion: { in: expirations.keys }
+  validates :visit_count, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
 
   before_validation :default_expire, if: Proc.new { expiration.blank? }
   after_save :generate_short_url, if: Proc.new { short.blank? }
+
+  scope :top_visited, -> (max: ENV['MAX_TOP_RECORDS']) { order(visit_count: :desc).limit(max) }
+
+  # Bumps the visit count number and updates the record
+  def visited!
+    update_attributes!(visit_count: visit_count+1)
+  end
 
   private
 
@@ -34,7 +42,17 @@ class ShortUrl < ApplicationRecord
   #
   # @return [Boolean] Whether the record could or couldn't be updated successfully.
   def generate_short_url
-    self.short = bijective_encode(id)
+    short = bijective_encode(id)
+
+    # if someone stored a custom short that translates to an actual auto-generated
+    # encoded ID then append the next number to it so it passes unique validation
+    # the downside of course is that it makes the URL one character longer
+    existing = self.class.where(short: short).count
+    self.short = if existing.positive?
+                   "#{short}#{existing+1}"
+                 else
+                   short
+                 end
     UrlTitleGenerationJob.perform_later(self.id)
     save
   end
