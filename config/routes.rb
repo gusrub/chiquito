@@ -6,4 +6,6 @@ Rails.application.routes.draw do
       get :top
     end
   end
+
+  match '*path' => 'application#reroute', via: [:get]
 end
