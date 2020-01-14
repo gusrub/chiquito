@@ -2,6 +2,7 @@ require "rails_helper"
 
 RSpec.describe ShortUrlsController, type: :routing do
   describe 'routing' do
+    let(:short_url) { FactoryBot.create(:short_url) }
     it 'routes to #create' do
       expect(:post => "/short_urls").to route_to("short_urls#create")
     end
@@ -12,6 +13,14 @@ RSpec.describe ShortUrlsController, type: :routing do
 
     it 'routes to #top' do
       expect(:get => "/short_urls/top").to route_to('short_urls#top')
+    end
+
+    it 'routes main route to the single view' do
+      expect(:get => "/").to route_to('application#index')
+    end
+
+    it 'routes everything else to the redirection' do
+      expect(:get => "/#{short_url.short}").to route_to('application#reroute', path: short_url.short)
     end
   end
 end
