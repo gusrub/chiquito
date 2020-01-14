@@ -9,12 +9,17 @@ class RegularUrlValidator < ActiveModel::EachValidator
   # @param [Object] value The value being validated
   # @return [Boolean] Either true if the record is valid or false otherwise.
   def validate_each(record, attribute, value)
-    uri = URI.parse(value)
-
-    return true if uri.host.present?
+    valid = false
+    begin
+      uri = URI.parse(value)
+      valid = uri.host.present?
+    rescue URI::InvalidURIError
+      valid = false
+    end
 
     error = "you must provide the protocol http or httpS"
-    record.errors.add(attribute, error)
-    false
+    record.errors.add(attribute, error) unless valid
+
+    valid
   end
 end
