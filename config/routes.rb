@@ -1,3 +1,5 @@
+require 'sidekiq/web'
+
 Rails.application.routes.draw do
   root to: 'application#index'
 
@@ -6,6 +8,8 @@ Rails.application.routes.draw do
       get :top
     end
   end
+
+  mount Sidekiq::Web => '/sidekiq' if Rails.env.development?
 
   match '*path' => 'application#reroute', via: [:get]
 end

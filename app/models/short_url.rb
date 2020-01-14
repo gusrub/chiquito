@@ -35,6 +35,7 @@ class ShortUrl < ApplicationRecord
   # @return [Boolean] Whether the record could or couldn't be updated successfully.
   def generate_short_url
     self.short = bijective_encode(id)
+    UrlTitleGenerationJob.perform_later(self.id)
     save
   end
 
