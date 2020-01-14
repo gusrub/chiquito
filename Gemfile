@@ -22,8 +22,12 @@ gem 'pg', '>= 0.18', '< 2.0'
 # Use Puma as the app server
 gem 'puma', '~> 3.11'
 
-# Use Uglifier as compressor for JavaScript assets
+# Frontend stuff
 gem 'uglifier', '>= 1.3.0'
+gem 'bootstrap', '~> 4.x'
+gem 'jquery-rails'
+gem 'font-awesome-rails', '~>4.x'
+
 # See https://github.com/rails/execjs#readme for more supported runtimes
 # gem 'mini_racer', platforms: :ruby
 

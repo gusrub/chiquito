@@ -4,15 +4,15 @@ RSpec.describe ShortUrlsController, type: :routing do
   describe 'routing' do
     let(:short_url) { FactoryBot.create(:short_url) }
     it 'routes to #create' do
-      expect(:post => "/short_urls").to route_to("short_urls#create")
+      expect(:post => "/short_urls").to route_to("short_urls#create", :format => 'json')
     end
 
     it 'routes to #show' do
-      expect(:get => "/short_urls/1").to route_to('short_urls#show', :id => '1')
+      expect(:get => "/short_urls/1").to route_to('short_urls#show', :id => '1', :format=> 'json')
     end
 
     it 'routes to #top' do
-      expect(:get => "/short_urls/top").to route_to('short_urls#top')
+      expect(:get => "/short_urls/top").to route_to('short_urls#top', :format=> 'json')
     end
 
     it 'routes main route to the single view' do
