@@ -26,10 +26,11 @@ $(document).ready(function() {
                     $("#long-url").addClass('was-validated');
                 } else {
                     original = $("#original").val();
+                    custom = $("#custom-url").val();
                     $.ajax({
                         url: '/short_urls',
                         contentType: 'application/json',
-                        data: JSON.stringify({ "original": original }),
+                        data: JSON.stringify({ "original": original, "short": custom }),
                         dataType: 'json',
                         method: 'POST',
                         processData: false
@@ -63,6 +64,12 @@ $(document).ready(function() {
         }).fail(function(error){
             alert("There was a problem!");
         });
+    });
+
+    $("#custom").click(function(event){
+        event.preventDefault();
+        $(this).remove();
+        $("#custom-container").fadeIn()
     });
 });
 
