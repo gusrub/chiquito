@@ -41,9 +41,8 @@ h4, p {
 #short-url {
   text-align: center;
 }
-#modal-trigger {
+a, a:hover {
   color: #1d2124;
-  text-decoration: underline;
 }
 .top100 {
   font-size: 120%;
@@ -56,4 +55,11 @@ p.notes {
 }
 p.notes a {
   color: #fd5866;
+}
+#custom-container {
+  display: none;
+}
+#custom {
+  display: block;
+  text-align: right;
 }
