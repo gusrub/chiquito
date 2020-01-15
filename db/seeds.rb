@@ -5,3 +5,9 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+
+puts "Seeding the database with 250 random records.."
+250.times do |t|
+  FactoryBot.create(:short_url, visit_count: rand(t+10))
+end
+puts "Finished seeding. Bye!"
