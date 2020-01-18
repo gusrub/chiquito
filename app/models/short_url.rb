@@ -28,6 +28,7 @@ class ShortUrl < ApplicationRecord
   validates :visit_count, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
 
   before_validation :default_expire, if: Proc.new { expiration.blank? }
+  before_validation :format_url, if: Proc.new { original.present? }
   after_save :generate_short_url, if: Proc.new { short.blank? }
 
   scope :top_visited, -> (max: ENV['MAX_TOP_RECORDS']) { order(visit_count: :desc).limit(max) }
@@ -90,5 +91,15 @@ class ShortUrl < ApplicationRecord
   # @return [ShortUrl.expirations] An expiration value.
   def default_expire
     self.expiration = self.class.expirations[:never]
+  end
+
+  # Formats the URL to have a valid protocol if none was given and also strips
+  # any spaces
+  def format_url
+    # remove spaces
+    original.gsub!(' ', '')
+
+    # add http by default if no protocol given
+    self.original = original.prepend("http://") unless %w[http https].include?(URI(original).scheme)
   end
 end

@@ -17,7 +17,7 @@ class RegularUrlValidator < ActiveModel::EachValidator
       valid = false
     end
 
-    error = "you must provide the protocol http or httpS"
+    error = "you must provide a valid URL"
     record.errors.add(attribute, error) unless valid
 
     valid

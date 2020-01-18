@@ -77,7 +77,11 @@ function generateTopTable(data) {
     $("#top100-table").empty();
     $(data).each(function(index, element){
         url = element;
-        row = '<tr><th scope="row">'+url.visit_count+'</th><td>'+url.title+'</td><td><a target="_blank" href="'+url.short+'">'+url.short+'</a></td></tr>';
+        title = '<span class="untitled-url">untitled</span>';
+        if (url.title !== null) {
+            title = url.title;
+        }
+        row = '<tr><th scope="row">'+url.visit_count+'</th><td>'+title+'</td><td><a target="_blank" href="'+url.short+'">'+url.short+'</a></td></tr>';
         $("#top100-table").append(row);
     });
 }
