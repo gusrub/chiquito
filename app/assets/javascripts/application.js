@@ -15,6 +15,7 @@
 //= require jquery3
 //= require popper
 //= require bootstrap
+//= require js-routes
 
 $(document).ready(function() {
 	$("#gen-button").click(function(event){
@@ -71,6 +72,8 @@ $(document).ready(function() {
         $(this).remove();
         $("#custom-container").fadeIn()
     });
+
+    $("#vanity-url").text(Routes.rootUrl());
 });
 
 function generateTopTable(data) {
