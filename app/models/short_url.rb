@@ -30,6 +30,7 @@ class ShortUrl < ApplicationRecord
   before_validation :default_expire, if: Proc.new { expiration.blank? }
   before_validation :format_url, if: Proc.new { original.present? }
   after_save :generate_short_url, if: Proc.new { short.blank? }
+  after_create :pull_title, if: Proc.new { title.blank? }
 
   scope :top_visited, -> (max: ENV['MAX_TOP_RECORDS']) { order(visit_count: :desc).limit(max) }
 
@@ -55,7 +56,6 @@ class ShortUrl < ApplicationRecord
                  else
                    short
                  end
-    UrlTitleGenerationJob.perform_later(self.id)
     save
   end
 
@@ -101,5 +101,10 @@ class ShortUrl < ApplicationRecord
 
     # add http by default if no protocol given
     self.original = original.prepend("http://") unless %w[http https].include?(URI(original).scheme)
+  end
+
+  # Enqueues the record to have the URL title pulled from the title tag if any
+  def pull_title
+    UrlTitleGenerationJob.perform_later(self.id)
   end
 end

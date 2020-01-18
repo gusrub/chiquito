@@ -27,6 +27,7 @@ gem 'uglifier', '>= 1.3.0'
 gem 'bootstrap', '~> 4.x'
 gem 'jquery-rails'
 gem 'font-awesome-rails', '~>4.x'
+gem 'js-routes'
 
 # Pretty print
 gem 'awesome_print'

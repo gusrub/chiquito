@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe UrlTitleGenerationJob, type: :job do
   describe "#perform_later" do
-    let(:short_url) { FactoryBot.create(:short_url) }
+    let(:short_url) { FactoryBot.build(:short_url, title: nil) }
 
     it 'pulls the title for a short URL' do
       ActiveJob::Base.queue_adapter = :test
