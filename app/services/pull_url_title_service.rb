@@ -1,4 +1,5 @@
 require 'net/http'
+require 'open-uri'
 
 # Pulls the page title from a given URL
 class PullUrlTitleService
@@ -56,8 +57,8 @@ class PullUrlTitleService
   #
   # @return [string] The short URL title, if any.
   def pull_title
-    request = Net::HTTP.get(URI(url))
-    doc = Nokogiri::HTML::Document.parse(request)
+    request = open(URI(url), read_timeout: ENV['TITLE_URL_TIMEOUT'].to_i)
+    doc = Nokogiri::HTML::Document.parse(request.read)
     doc.title
   end
 
@@ -68,7 +69,7 @@ class PullUrlTitleService
   # @param [StandardError] error Any type of error to be handled.
   def handle_error(error)
     case error.class.name
-    when SocketError.name, Errno::ECONNREFUSED.name
+    when SocketError.name, Errno::ECONNREFUSED.name, Errno::ENOENT.name
       @errors << 'Could not connect to host'
     else
       Rails.logger.error("[error: #{log_id}] #{error.message}")

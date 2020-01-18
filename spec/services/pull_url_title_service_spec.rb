@@ -3,15 +3,15 @@ require 'rails_helper'
 describe PullUrlTitleService do
   let(:url) { 'http://example.com' }
   let(:title) { 'Hello world!' }
-  let(:response) { "<html><head><title>#{title}</title></head></html>" }
+  let(:response) { StringIO.new("<html><head><title>#{title}</title></head></html>") }
   let(:service) { described_class.new(url) }
 
   context 'when URL is unavailable' do
     let(:error_message) { 'Could not connect to host' }
 
     before(:each) do
-      allow(Net::HTTP)
-        .to receive(:get)
+      allow_any_instance_of(described_class)
+        .to receive(:open)
         .and_raise(SocketError, "you can't have a pony!")
     end
 
@@ -23,8 +23,8 @@ describe PullUrlTitleService do
     let(:title) { nil }
 
     before(:each) do
-      allow(Net::HTTP)
-        .to receive(:get)
+      allow_any_instance_of(described_class)
+        .to receive(:open)
         .and_return(response)
     end
 
@@ -33,8 +33,8 @@ describe PullUrlTitleService do
 
   context 'when title is available' do
     before(:each) do
-      allow(Net::HTTP)
-        .to receive(:get)
+      allow_any_instance_of(described_class)
+        .to receive(:open)
         .and_return(response)
     end
 
