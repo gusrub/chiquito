@@ -105,6 +105,8 @@ class ShortUrl < ApplicationRecord
 
   # Enqueues the record to have the URL title pulled from the title tag if any
   def pull_title
-    UrlTitleGenerationJob.perform_later(self.id)
+    # We are having race conditions, let's just wait one minute until this thing
+    # is persisted so the the records is actually found
+    UrlTitleGenerationJob.set(wait: 1.minutes).perform_later(self.id)
   end
 end

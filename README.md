@@ -35,9 +35,54 @@ rails db:seed
 
 And simply run it:
 
-```
+```bash
 rails server
 ```
+
+## Running with docker
+
+If you don't want to hassle with setting a local dev environment you can just fire up a docker instance of the app:
+
+ - Rename the included `env.example` to `.env`
+ - Change the settings there. They _should_ work right out of the box but you can make adjustments (like the postgres user, password etc.) but its not necessary
+
+Once you have the settings on place simply run the following:
+
+```
+docker-compose up --build
+```
+
+That should run the application, however, you still need to run migrations to create the database, you can do so by running a one-time container and run the migration command:
+
+```bash
+docker-compose run web rake db:migrate
+```
+
+And if you want to create some test data:
+
+```bash
+docker-compose run web rake db:seed
+```
+
+### Notes on running with Docker
+
+If you run this application with Docker please make sure that you are not running the same services on the local machine or at least in the same ports, for instance, another rails application under TCP port **3000**, another instance of Postgres in port **5432**, Redis server in **6379** etc, otherwise the container will stop complaining on ports already being used. Remember Docker binds those containerized services ports into the host machine network.
+
+Also, if you want to access a rails console to do some testing or manual work you can do so by executing a rails command to the running container like this:
+
+```bash
+docker exec -it chiquito_web_1 /bin/bash
+```
+
+Once there, you will have a **bash** session within the container pointing the current working directory to the actual `/app` folder so you can just run:
+
+```bash
+bundle exec rails console
+```
+
+And you should be good to go.
+
+Also, there are volumes (as in disks) created so whatever data you input in the application and in the database will be persisted even if you stop the containers, unless you prune the system or remove the containers.
 
 ## Running tests
 
