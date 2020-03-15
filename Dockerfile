@@ -1,4 +1,4 @@
-FROM ruby:2.6.3-alpine
+FROM ruby:2.6.5-alpine
 
 LABEL "org.gusrub.vendor"="Gustavo Adolfo Rubio Casillas"
 LABEL "com.saecri.maintainer"="Gustavo Rubio <mail@gustavorub.io>"
@@ -17,7 +17,7 @@ WORKDIR /app
 COPY Gemfile ./Gemfile
 COPY Gemfile.lock ./Gemfile.lock
 
-RUN gem install bundler -v 1.17.1
+RUN gem install bundler
 RUN bundle install -j 4
 RUN bundle exec rails db:drop db:create db:migrate
 COPY . .

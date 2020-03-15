@@ -61,7 +61,7 @@ $(document).ready(function() {
             processData: false
         }).done(function(data){
             generateTopTable(data);
-            $('#top100-modal').modal('show');
+            $('#top-records-modal').modal('show');
         }).fail(function(error){
             alert("There was a problem!");
         });
@@ -77,7 +77,7 @@ $(document).ready(function() {
 });
 
 function generateTopTable(data) {
-    $("#top100-table").empty();
+    $("#top-records-table").empty();
     $(data).each(function(index, element){
         url = element;
         title = '<span class="untitled-url">untitled</span>';
@@ -85,6 +85,6 @@ function generateTopTable(data) {
             title = url.title;
         }
         row = '<tr><th scope="row">'+url.visit_count+'</th><td>'+title+'</td><td><a target="_blank" href="'+url.short+'">'+url.short+'</a></td></tr>';
-        $("#top100-table").append(row);
+        $("#top-records-table").append(row);
     });
 }

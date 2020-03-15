@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '2.6.3'
+ruby '2.6.5'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.2.3'
@@ -15,7 +15,7 @@ gem 'dotenv-rails', groups: [:development, :test], require: 'dotenv/rails-now'
 
 # This is a temporary hack to be able to run the sidekiq web interface locally
 # see https://github.com/rack/rack/pull/1428
-gem 'rack', git: 'https://github.com/rack/rack', branch: 'master'
+gem 'rack'
 
 # Use postgresql as the database for Active Record
 gem 'pg', '>= 0.18', '< 2.0'
