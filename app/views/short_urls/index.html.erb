@@ -79,7 +79,7 @@
   </div>
 
   <!-- Modal -->
-  <div class="modal fade" id="top100-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal fade" id="top-records-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -97,7 +97,7 @@
                 <th scope="col">URL</th>
               </tr>
             </thead>
-            <tbody id="top100-table">
+            <tbody id="top-records-table">
               <tr>
                 <th scope="row">25</th>
                 <td>Some website</td>
@@ -118,12 +118,12 @@
   <div class="fixed-bottom">
     <div class="container">
       <div class="row">
-        <div class="col-md-8 offset-md-2 top100">
-          <a id="modal-trigger" href="#" data-target="#top100-modal" id="top100">Top 100 accessed URL's</a>
+        <div class="col-md-8 offset-md-2 top-records">
+          <a id="modal-trigger" href="#" data-target="#top-records-modal" id="top-records">Top <%= ENV['MAX_TOP_RECORDS'] %> accessed URL's</a>
         </div>
       </div>
       <div class="row">
-        <div class="col-md-8 offset-md-2 top100">
+        <div class="col-md-8 offset-md-2 top-records">
           <p class="notes"><a href="https://gustavorub.io">made with ❤️ in Tijuana, Mexico</a></p>
         </div>
       </div>
