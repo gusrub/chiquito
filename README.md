@@ -39,6 +39,14 @@ And simply run it:
 rails server
 ```
 
+If you want to have a queue to pull the URL titles instead of pulling them immediately you need to run the sidekiq queue:
+
+```bash
+bundle exec sidekiq -q default
+```
+
+You need to set the env var `TITLE_PULL_QUEUE` to `true` to have the titles pulling queue working which is disabled by default.
+
 ## Running with docker
 
 If you don't want to hassle with setting a local dev environment you can just fire up a docker instance of the app:

@@ -30,8 +30,8 @@ class ShortUrl < ApplicationRecord
 
   before_validation :default_expire, if: Proc.new { expiration.blank? }
   before_validation :format_url, if: Proc.new { original.present? }
+
   after_save :generate_short_url, if: Proc.new { short.blank? }
-  after_create :pull_title, if: Proc.new { title.blank? }
 
   scope :top_visited, -> (max: ENV['MAX_TOP_RECORDS']) { order(visit_count: :desc).limit(max) }
 
@@ -57,7 +57,12 @@ class ShortUrl < ApplicationRecord
                  else
                    short
                  end
+
+    # we need to save the record at this point because otherwise the worker
+    # pulling the title will fail validation to update the record unless we have
+    # a valid short URL
     save
+    pull_title
   end
 
   # Returns a unique base62 encoded string representing the given numeric value
@@ -104,10 +109,24 @@ class ShortUrl < ApplicationRecord
     self.original = original.prepend("http://") unless %w[http https].include?(URI(original).scheme)
   end
 
-  # Enqueues the record to have the URL title pulled from the title tag if any
+  # Enqueues the record to have the URL title pulled from the title tag if any,
+  # if the TITLE_PULL_QUEUE env var is set to true, otherwise it will try to
+  # immediately pull it.
   def pull_title
-    # We are having race conditions, let's just wait one minute until this thing
-    # is persisted so the the records is actually found
-    UrlTitleGenerationJob.set(wait: 1.minutes).perform_later(self.id)
+    return unless title.blank?
+    if queue_title_pull?
+      UrlTitleGenerationJob.perform_later(self.id)
+    else
+      UrlTitleGenerationJob.perform_now(self.id)
+    end
+  end
+
+  # Checks whether the title retrieval must be put in a queue for later
+  # processing or to pull it right away.
+  #
+  # @return [Boolean] Whether to put in the queue or not.
+  def queue_title_pull?
+    pull = ENV['TITLE_PULL_QUEUE'].try(:downcase)
+    %w(1 yes true).include?(pull)
   end
 end
