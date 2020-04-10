@@ -33,7 +33,7 @@ pipelines:
           deployment: production
           trigger: manual
           script:
-            - pipe: atlassian/heroku-deploy:1.1.1
+            - pipe: atlassian/heroku-deploy:1.1.2
               variables:
                 HEROKU_API_KEY: $HEROKU_API_KEY
                 HEROKU_APP_NAME: $HEROKU_APP_NAME
