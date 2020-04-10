@@ -53,6 +53,25 @@ RSpec.describe ShortUrl, type: :model do
         expect(conflicting_url.short).to eq(fallback)
       end
     end
+
+    context 'if link is broken or host does not exist' do
+      let(:short_url) do
+        FactoryBot.build(:short_url, original: 'http://invalid.local')
+      end
+
+      before(:all) do
+        ENV['VALIDATE_BROKEN_LINKS'] = "true"
+      end
+
+      after(:all) do
+        ENV['VALIDATE_BROKEN_LINKS'] = "false"
+      end
+
+      it 'does not pass validation' do
+        expect(short_url.valid?).to be(false)
+        expect(short_url.errors[:original]).to_not be_empty
+      end
+    end
   end
 
   describe :callbacks do

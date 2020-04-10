@@ -18,8 +18,9 @@ class ShortUrl < ApplicationRecord
     :year
   ], _suffix: true
 
-  validates :original,  presence: true
+  validates :original, presence: true
   validates :original, regular_url: true
+  validates :original, broken_link: true, on: :create
   validates :short, length: { maximum: CUSTOM_MAX_LENGTH, allow_blank: true }, uniqueness: true
   validates :short, presence: true, if: :persisted?
   validates :short, custom_url: true
